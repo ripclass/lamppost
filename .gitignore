@@ -70,4 +70,5 @@ next-env.d.ts
 /logs
 
 # docs
-/docs
+/docs/*
+!/docs/architecture.md

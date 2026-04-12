@@ -1,0 +1,50 @@
+# ============================================================
+# Ollama + Gemma 3 + nomic-embed-text for School Deployments
+#
+# Pulls the required models on first boot.
+# GPU is optional but recommended for Gemma 3.
+# ============================================================
+
+FROM ollama/ollama:latest
+
+# Script to pull models on first start
+COPY <<'EOF' /entrypoint.sh
+#!/bin/sh
+set -e
+
+# Start Ollama server in background
+ollama serve &
+SERVER_PID=$!
+
+# Wait for server to be ready
+echo "Waiting for Ollama server..."
+for i in $(seq 1 30); do
+  if ollama list >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+done
+
+# Pull models if not already present
+echo "Checking models..."
+
+if ! ollama list | grep -q "nomic-embed-text"; then
+  echo "Pulling nomic-embed-text (embedding model)..."
+  ollama pull nomic-embed-text
+fi
+
+if ! ollama list | grep -q "gemma3:12b"; then
+  echo "Pulling gemma3:12b (classroom model)..."
+  ollama pull gemma3:12b
+fi
+
+echo "Models ready!"
+ollama list
+
+# Keep server running
+wait $SERVER_PID
+EOF
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

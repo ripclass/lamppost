@@ -1,0 +1,103 @@
+# ============================================================
+# Lamppost School Deployment — Complete Offline Stack
+#
+# Usage:
+#   docker compose -f docker-compose.school.yml up -d
+#
+# This deploys:
+#   - Lamppost (Next.js app)
+#   - PostgreSQL 16 + pgvector (Q&A bank + analytics)
+#   - Ollama (Gemma 3 12B + nomic-embed-text)
+#
+# After first boot, pull models:
+#   docker compose -f docker-compose.school.yml exec ollama ollama pull gemma3:12b
+#   docker compose -f docker-compose.school.yml exec ollama ollama pull nomic-embed-text
+#
+# Then seed content:
+#   npx tsx scripts/seed-demo.ts
+#
+# Requirements:
+#   - 16GB+ RAM (Gemma 3 12B needs ~8GB)
+#   - GPU optional but recommended
+#   - Pre-generated lessons loaded before going offline
+# ============================================================
+
+services:
+  lampost:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # Database
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:3000
+      - DATABASE_URL=postgresql://lampost:lampost@postgres:5432/lampost
+
+      # Models — all local via Ollama
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - CLASSROOM_FALLBACK_MODEL=ollama:gemma3:12b
+      - EMBEDDING_MODEL=nomic-embed-text
+      - OFFLINE_CLASSROOM_MODEL=gemma3:12b
+
+      # Q&A bank config
+      - QA_SIMILARITY_THRESHOLD=0.85
+
+      # Language defaults for Bangladesh
+      - DEFAULT_CONTENT_LANGUAGE=bn
+      - DEFAULT_UI_LANGUAGE=bn-BD
+      - NEXT_PUBLIC_APP_NAME=Lamppost
+
+      # Allow local network URLs
+      - ALLOW_LOCAL_NETWORKS=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    volumes:
+      - lesson_cache:/app/cache
+      - audio_cache:/app/audio
+    restart: unless-stopped
+
+  ollama:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: lampost
+      POSTGRES_PASSWORD: lampost
+      POSTGRES_DB: lampost
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run migrations on first boot
+      - ./supabase/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lampost -d lampost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  postgres_data:
+  lesson_cache:
+  audio_cache:

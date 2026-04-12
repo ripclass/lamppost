@@ -1,0 +1,21 @@
+[project]
+id = "lamppost"
+name = "Lamppost"
+
+[db]
+port = 54322
+major_version = 16
+
+[db.pooler]
+enabled = true
+port = 54329
+pool_mode = "transaction"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"

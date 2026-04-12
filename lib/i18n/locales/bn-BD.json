@@ -1,0 +1,388 @@
+{
+  "common": {
+    "you": "আপনি",
+    "confirm": "নিশ্চিত করুন",
+    "cancel": "বাতিল",
+    "loading": "লোড হচ্ছে..."
+  },
+  "home": {
+    "slogan": "মাল্টি-এজেন্ট ইন্টারেক্টিভ ক্লাসরুমে জেনারেটিভ লার্নিং",
+    "greetingWithName": "হ্যালো, {{name}}"
+  },
+  "toolbar": {
+    "languageHint": "কোর্সটি এই ভাষায় তৈরি হবে",
+    "pdfParser": "পার্সার",
+    "pdfUpload": "PDF আপলোড করুন",
+    "removePdf": "ফাইল সরান",
+    "webSearchOn": "সক্রিয়",
+    "webSearchOff": "সক্রিয় করতে ক্লিক করুন",
+    "webSearchDesc": "তৈরির আগে ওয়েবে আপডেট তথ্য খুঁজুন",
+    "webSearchProvider": "সার্চ ইঞ্জিন",
+    "webSearchNoProvider": "সেটিংসে সার্চ API কী কনফিগার করুন",
+    "selectProvider": "প্রদানকারী নির্বাচন করুন",
+    "configureProvider": "মডেল সেটআপ",
+    "configureProviderHint": "কোর্স তৈরি করতে অন্তত একটি মডেল প্রদানকারী কনফিগার করুন",
+    "enterClassroom": "ক্লাসরুমে প্রবেশ করুন",
+    "advancedSettings": "উন্নত সেটিংস",
+    "ttsTitle": "টেক্সট-টু-স্পিচ",
+    "ttsHint": "AI শিক্ষকের জন্য কণ্ঠ নির্বাচন করুন",
+    "ttsPreview": "প্রিভিউ",
+    "ttsPreviewing": "চলছে..."
+  },
+  "export": {
+    "pptx": "PPTX এক্সপোর্ট",
+    "resourcePack": "রিসোর্স প্যাক এক্সপোর্ট",
+    "resourcePackDesc": "PPTX + ইন্টারেক্টিভ পেজ",
+    "exporting": "এক্সপোর্ট হচ্ছে...",
+    "exportSuccess": "এক্সপোর্ট সফল",
+    "exportFailed": "এক্সপোর্ট ব্যর্থ"
+  },
+  "chat": {
+    "lecture": "লেকচার",
+    "noConversations": "কোনো কথোপকথন নেই",
+    "startConversation": "চ্যাট শুরু করতে নিচে একটি মেসেজ লিখুন",
+    "noMessages": "এখনও কোনো মেসেজ নেই",
+    "ended": "শেষ",
+    "unknown": "অজানা",
+    "stopDiscussion": "আলোচনা বন্ধ করুন",
+    "endQA": "প্রশ্নোত্তর শেষ করুন",
+    "tabs": {
+      "lecture": "নোটস",
+      "chat": "চ্যাট"
+    },
+    "lectureNotes": {
+      "empty": "লেকচার প্লেব্যাকের পরে এখানে নোটস দেখা যাবে",
+      "emptyHint": "লেকচার শুরু করতে প্লে চাপুন",
+      "pageLabel": "পৃষ্ঠা {{n}}",
+      "currentPage": "বর্তমান"
+    },
+    "badge": {
+      "qa": "প্রশ্নোত্তর",
+      "discussion": "আলোচনা",
+      "lecture": "লেকচার"
+    }
+  },
+  "actions": {
+    "names": {
+      "spotlight": "স্পটলাইট",
+      "laser": "লেজার",
+      "wb_open": "হোয়াইটবোর্ড খুলুন",
+      "wb_draw_text": "হোয়াইটবোর্ড টেক্সট",
+      "wb_draw_shape": "হোয়াইটবোর্ড আকৃতি",
+      "wb_draw_chart": "হোয়াইটবোর্ড চার্ট",
+      "wb_draw_latex": "হোয়াইটবোর্ড সূত্র",
+      "wb_draw_table": "হোয়াইটবোর্ড টেবিল",
+      "wb_draw_line": "হোয়াইটবোর্ড রেখা",
+      "wb_clear": "হোয়াইটবোর্ড মুছুন",
+      "wb_delete": "উপাদান মুছুন",
+      "wb_close": "হোয়াইটবোর্ড বন্ধ করুন",
+      "discussion": "আলোচনা"
+    },
+    "status": {
+      "inputStreaming": "অপেক্ষা",
+      "inputAvailable": "চলছে",
+      "outputAvailable": "সম্পন্ন",
+      "outputError": "ত্রুটি",
+      "outputDenied": "প্রত্যাখ্যাত",
+      "running": "চলছে",
+      "result": "সম্পন্ন",
+      "error": "ত্রুটি"
+    }
+  },
+  "agentBar": {
+    "readyToLearn": "একসাথে শেখার জন্য প্রস্তুত?",
+    "expandedTitle": "ক্লাসরুম ভূমিকা কনফিগারেশন",
+    "configTooltip": "ক্লাসরুম ভূমিকা কনফিগার করতে ক্লিক করুন",
+    "voiceLabel": "কণ্ঠ",
+    "voiceLoading": "লোড হচ্ছে...",
+    "voiceAutoAssign": "কণ্ঠ স্বয়ংক্রিয়ভাবে নির্ধারিত হবে"
+  },
+  "proactiveCard": {
+    "discussion": "আলোচনা",
+    "join": "যোগ দিন",
+    "skip": "এড়িয়ে যান",
+    "pause": "বিরতি",
+    "resume": "চালু করুন"
+  },
+  "voice": {
+    "startListening": "ভয়েস ইনপুট",
+    "stopListening": "রেকর্ডিং বন্ধ করুন"
+  },
+  "stage": {
+    "currentScene": "বর্তমান দৃশ্য",
+    "generating": "তৈরি হচ্ছে...",
+    "paused": "বিরতি",
+    "generationFailed": "তৈরি ব্যর্থ",
+    "confirmSwitchTitle": "দৃশ্য পরিবর্তন",
+    "confirmSwitchMessage": "একটি বিষয় চলছে। দৃশ্য পরিবর্তন করলে বর্তমান বিষয় শেষ হবে। আপনি কি নিশ্চিত?",
+    "generatingNextPage": "দৃশ্য তৈরি হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...",
+    "fullscreen": "পূর্ণ স্ক্রিন",
+    "exitFullscreen": "পূর্ণ স্ক্রিন থেকে বের হন"
+  },
+  "whiteboard": {
+    "title": "ইন্টারেক্টিভ হোয়াইটবোর্ড",
+    "open": "হোয়াইটবোর্ড খুলুন",
+    "clear": "হোয়াইটবোর্ড মুছুন",
+    "minimize": "হোয়াইটবোর্ড ছোট করুন",
+    "ready": "হোয়াইটবোর্ড প্রস্তুত",
+    "readyHint": "AI যোগ করলে এখানে উপাদান দেখা যাবে",
+    "clearSuccess": "হোয়াইটবোর্ড সফলভাবে মুছে ফেলা হয়েছে",
+    "clearError": "হোয়াইটবোর্ড মুছতে ব্যর্থ: ",
+    "resetView": "ভিউ রিসেট",
+    "restoreError": "হোয়াইটবোর্ড পুনরুদ্ধার করতে ব্যর্থ: ",
+    "history": "ইতিহাস",
+    "restore": "পুনরুদ্ধার",
+    "noHistory": "এখনো কোনো ইতিহাস নেই",
+    "restored": "হোয়াইটবোর্ড পুনরুদ্ধার করা হয়েছে",
+    "elementCount": "{{count}}টি উপাদান"
+  },
+  "quiz": {
+    "title": "কুইজ",
+    "subtitle": "আপনার জ্ঞান পরীক্ষা করুন",
+    "questionsCount": "প্রশ্ন",
+    "totalPrefix": "",
+    "pointsSuffix": "পয়েন্ট",
+    "startQuiz": "কুইজ শুরু করুন",
+    "multipleChoiceHint": "(বহু নির্বাচনী — সব সঠিক উত্তর নির্বাচন করুন)",
+    "inputPlaceholder": "আপনার উত্তর এখানে লিখুন...",
+    "charCount": "অক্ষর",
+    "yourAnswer": "আপনার উত্তর:",
+    "notAnswered": "উত্তর দেওয়া হয়নি",
+    "aiComment": "AI মন্তব্য",
+    "singleChoice": "একক",
+    "multipleChoice": "বহু",
+    "shortAnswer": "সংক্ষিপ্ত উত্তর",
+    "analysis": "বিশ্লেষণ: ",
+    "excellent": "চমৎকার!",
+    "keepGoing": "চালিয়ে যাও!",
+    "needsReview": "পুনর্বিবেচনা প্রয়োজন",
+    "correct": "সঠিক",
+    "incorrect": "ভুল",
+    "answering": "চলছে",
+    "submitAnswers": "উত্তর জমা দিন",
+    "aiGrading": "AI মূল্যায়ন করছে...",
+    "aiGradingWait": "অনুগ্রহ করে অপেক্ষা করুন, আপনার উত্তর বিশ্লেষণ হচ্ছে",
+    "quizReport": "কুইজ রিপোর্ট",
+    "retry": "আবার চেষ্টা করুন"
+  },
+  "roundtable": {
+    "teacher": "শিক্ষক",
+    "you": "আপনি",
+    "inputPlaceholder": "আপনার মেসেজ লিখুন...",
+    "listening": "শুনছে...",
+    "processing": "প্রক্রিয়াকরণ...",
+    "noSpeechDetected": "কোনো কথা শনাক্ত হয়নি, আবার চেষ্টা করুন",
+    "discussionEnded": "আলোচনা শেষ",
+    "qaEnded": "প্রশ্নোত্তর শেষ",
+    "thinking": "ভাবছে",
+    "yourTurn": "আপনার পালা",
+    "stopDiscussion": "আলোচনা বন্ধ করুন",
+    "autoPlay": "অটো-প্লে",
+    "autoPlayOff": "অটো-প্লে বন্ধ",
+    "speed": "গতি",
+    "voiceInput": "ভয়েস ইনপুট",
+    "voiceInputDisabled": "ভয়েস ইনপুট নিষ্ক্রিয়",
+    "textInput": "টেক্সট ইনপুট",
+    "stopRecording": "রেকর্ডিং বন্ধ",
+    "startRecording": "রেকর্ডিং শুরু"
+  },
+  "pbl": {
+    "legacyFormat": "এই PBL দৃশ্যটি পুরানো ফর্ম্যাট ব্যবহার করছে। অনুগ্রহ করে কোর্স পুনরায় তৈরি করুন।",
+    "emptyProject": "PBL প্রকল্প এখনও তৈরি হয়নি। অনুগ্রহ করে কোর্স তৈরি করে শুরু করুন।",
+    "roleSelection": {
+      "title": "আপনার ভূমিকা নির্বাচন করুন",
+      "description": "প্রকল্পে সহযোগিতা শুরু করতে একটি ভূমিকা নির্বাচন করুন"
+    },
+    "workspace": {
+      "restart": "পুনরায় শুরু",
+      "confirmRestart": "সব অগ্রগতি রিসেট করবেন?",
+      "confirm": "নিশ্চিত",
+      "cancel": "বাতিল"
+    },
+    "issueboard": {
+      "title": "ইস্যু বোর্ড",
+      "noIssues": "এখনো কোনো ইস্যু নেই",
+      "statusDone": "সম্পন্ন",
+      "statusActive": "সক্রিয়",
+      "statusPending": "অমীমাংসিত"
+    },
+    "chat": {
+      "title": "প্রকল্প আলোচনা",
+      "currentIssue": "বর্তমান ইস্যু",
+      "mentionHint": "প্রশ্ন করতে @question, পর্যালোচনার জন্য @judge ব্যবহার করুন",
+      "placeholder": "একটি মেসেজ লিখুন...",
+      "send": "পাঠান"
+    },
+    "guide": {
+      "howItWorks": "কিভাবে কাজ করে",
+      "help": "সাহায্য",
+      "title": "সাহায্য"
+    }
+  },
+  "share": {
+    "notReady": "তৈরি সম্পন্ন হলে পাওয়া যাবে"
+  },
+  "classroom": {
+    "recentClassrooms": "সাম্প্রতিক",
+    "today": "আজ",
+    "yesterday": "গতকাল",
+    "daysAgo": "দিন আগে",
+    "slides": "স্লাইড",
+    "nameCopied": "নাম কপি করা হয়েছে",
+    "deleteConfirmTitle": "মুছুন",
+    "delete": "মুছুন",
+    "rename": "নাম পরিবর্তন",
+    "renamePlaceholder": "ক্লাসরুমের নাম লিখুন",
+    "renameFailed": "ক্লাসরুমের নাম পরিবর্তন ব্যর্থ"
+  },
+  "upload": {
+    "pdfSizeLimit": "৫০MB পর্যন্ত PDF ফাইল সমর্থিত",
+    "generateFailed": "ক্লাসরুম তৈরি ব্যর্থ, আবার চেষ্টা করুন",
+    "requirementPlaceholder": "আপনি কী শিখতে চান বলুন, যেমন\n\"৩০ মিনিটে পাইথন শেখান\"\n\"হোয়াইটবোর্ডে ফুরিয়ে ট্রান্সফর্ম ব্যাখ্যা করুন\"\n\"নিউটনের গতিসূত্র শেখান\"",
+    "requirementRequired": "কোর্সের প্রয়োজনীয়তা লিখুন",
+    "fileTooLarge": "ফাইল খুব বড়। অনুগ্রহ করে ৫০MB-এর চেয়ে ছোট PDF ফাইল নির্বাচন করুন"
+  },
+  "generation": {
+    "analyzingPdf": "PDF ডকুমেন্ট বিশ্লেষণ করা হচ্ছে",
+    "analyzingPdfDesc": "ডকুমেন্টের গঠন ও বিষয়বস্তু নিষ্কাশন হচ্ছে...",
+    "pdfLoadFailed": "PDF ফাইল লোড করতে ব্যর্থ, আবার চেষ্টা করুন",
+    "pdfParseFailed": "PDF পার্সিং ব্যর্থ",
+    "streamNotReadable": "জেনারেশন স্ট্রিম পড়া যাচ্ছে না",
+    "generatingOutlines": "কোর্সের রূপরেখা তৈরি হচ্ছে",
+    "generatingOutlinesDesc": "শেখার পথ গঠন করা হচ্ছে...",
+    "generatingSlideContent": "পৃষ্ঠার বিষয়বস্তু তৈরি হচ্ছে",
+    "generatingSlideContentDesc": "স্লাইড, কুইজ এবং ইন্টারেক্টিভ কন্টেন্ট তৈরি হচ্ছে...",
+    "generatingActions": "শিক্ষণ অ্যাকশন তৈরি হচ্ছে",
+    "generatingActionsDesc": "বর্ণনা, স্পটলাইট এবং ইন্টারেকশন সাজানো হচ্ছে...",
+    "generationComplete": "তৈরি সম্পন্ন!",
+    "generationFailed": "তৈরি ব্যর্থ",
+    "generatingCourse": "কোর্স তৈরি হচ্ছে",
+    "openingClassroom": "ক্লাসরুম খোলা হচ্ছে...",
+    "outlineReady": "কোর্সের রূপরেখা তৈরি হয়েছে",
+    "generatingFirstPage": "প্রথম পৃষ্ঠা তৈরি হচ্ছে...",
+    "firstPageReady": "প্রথম পৃষ্ঠা প্রস্তুত! ক্লাসরুম খোলা হচ্ছে...",
+    "speechFailed": "কথন তৈরি ব্যর্থ",
+    "retryScene": "আবার চেষ্টা",
+    "retryingScene": "পুনরায় তৈরি হচ্ছে...",
+    "backToHome": "হোমে ফিরে যান",
+    "sessionNotFound": "সেশন পাওয়া যায়নি",
+    "sessionNotFoundDesc": "জেনারেশন প্রক্রিয়া শুরু করতে কোর্সের প্রয়োজনীয়তা পূরণ করুন।",
+    "goBackAndRetry": "ফিরে যান এবং আবার চেষ্টা করুন",
+    "classroomReady": "আপনার ব্যক্তিগত AI শিক্ষা পরিবেশ সফলভাবে তৈরি হয়েছে।",
+    "aiWorking": "AI এজেন্ট কাজ করছে...",
+    "textTruncated": "ডকুমেন্ট টেক্সট বড়, জেনারেশনের জন্য প্রথম {{n}} অক্ষর ব্যবহার করা হচ্ছে",
+    "imageTruncated": "{{total}}টি ছবি পাওয়া গেছে, {{max}} ছবির সীমা অতিক্রম করছে",
+    "agentGeneration": "ক্লাসরুম ভূমিকা তৈরি হচ্ছে",
+    "agentGenerationDesc": "কোর্সের বিষয়বস্তু অনুযায়ী ভূমিকা তৈরি হচ্ছে...",
+    "agentRevealTitle": "আপনার ক্লাসরুম ভূমিকা",
+    "viewAgents": "ভূমিকা দেখুন",
+    "continue": "চালিয়ে যান",
+    "webSearching": "ওয়েব সার্চ",
+    "webSearchingDesc": "আপডেট তথ্যের জন্য ওয়েবে খোঁজা হচ্ছে",
+    "webSearchFailed": "ওয়েব সার্চ ব্যর্থ"
+  },
+  "settings": {
+    "title": "সেটিংস",
+    "description": "অ্যাপ্লিকেশন সেটিংস কনফিগার করুন",
+    "language": "ভাষা",
+    "languageDesc": "ইন্টারফেস ভাষা নির্বাচন করুন",
+    "theme": "থিম",
+    "themeDesc": "থিম মোড নির্বাচন করুন (লাইট/ডার্ক/সিস্টেম)",
+    "themeOptions": {
+      "light": "লাইট",
+      "dark": "ডার্ক",
+      "system": "সিস্টেম"
+    },
+    "close": "বন্ধ করুন",
+    "save": "সংরক্ষণ",
+    "providers": "LLM",
+    "saveSuccess": "সেটিংস সংরক্ষিত",
+    "saveFailed": "সেটিংস সংরক্ষণ ব্যর্থ",
+    "agentNames": {
+      "default-1": "AI শিক্ষক",
+      "default-2": "AI সহকারী",
+      "default-3": "মজার বন্ধু",
+      "default-4": "কৌতূহলী মন",
+      "default-5": "নোট নেওয়া বন্ধু",
+      "default-6": "গভীর চিন্তক"
+    },
+    "agentRoles": {
+      "teacher": "শিক্ষক",
+      "assistant": "সহকারী",
+      "student": "শিক্ষার্থী"
+    },
+    "lang_bn": "বাংলা",
+    "lang_bn-BD": "বাংলা (বাংলাদেশ)"
+  },
+  "profile": {
+    "title": "প্রোফাইল",
+    "defaultNickname": "শিক্ষার্থী",
+    "chooseAvatar": "অবতার নির্বাচন করুন",
+    "uploadAvatar": "আপলোড",
+    "bioPlaceholder": "নিজের সম্পর্কে বলুন — AI শিক্ষক আপনার জন্য পাঠ ব্যক্তিগতকৃত করবে...",
+    "avatarHint": "আপনার অবতার ক্লাসরুম আলোচনা ও চ্যাটে দেখা যাবে",
+    "editTooltip": "প্রোফাইল সম্পাদনা করতে ক্লিক করুন"
+  },
+  "media": {
+    "imageCapability": "ইমেজ তৈরি",
+    "imageHint": "স্লাইডে ছবি তৈরি করুন",
+    "videoCapability": "ভিডিও তৈরি",
+    "videoHint": "স্লাইডে ভিডিও তৈরি করুন",
+    "ttsCapability": "টেক্সট-টু-স্পিচ",
+    "ttsHint": "AI শিক্ষক কথা বলে",
+    "asrCapability": "স্পিচ রিকগনিশন",
+    "asrHint": "আলোচনায় ভয়েস ইনপুট",
+    "provider": "প্রদানকারী",
+    "model": "মডেল",
+    "voice": "কণ্ঠ",
+    "speed": "গতি",
+    "language": "ভাষা"
+  },
+  "curriculum": {
+    "title": "পাঠ্যক্রম",
+    "browse": "পাঠ্যক্রম ব্রাউজ করুন",
+    "allCurricula": "সকল পাঠ্যক্রম",
+    "subjects": "বিষয়সমূহ",
+    "chapters": "অধ্যায়সমূহ",
+    "enterClassroom": "ক্লাসরুমে প্রবেশ করুন",
+    "status": {
+      "pending": "অমীমাংসিত",
+      "generating": "তৈরি হচ্ছে",
+      "complete": "সম্পন্ন",
+      "failed": "ব্যর্থ"
+    },
+    "qaBank": "প্রশ্নোত্তর ব্যাংক",
+    "qaBankEntries": "{{count}}টি প্রশ্নোত্তর",
+    "noChapters": "এই বিষয়ে কোনো অধ্যায় নেই",
+    "noSubjects": "এই পাঠ্যক্রমে কোনো বিষয় নেই",
+    "board": "বোর্ড",
+    "grade": "শ্রেণি"
+  },
+  "admin": {
+    "title": "অ্যাডমিন ড্যাশবোর্ড",
+    "overview": "সারসংক্ষেপ",
+    "flywheel": "ফ্লাইহুইল",
+    "analytics": "বিশ্লেষণ",
+    "generate": "তৈরি করুন",
+    "totalChapters": "মোট অধ্যায়",
+    "totalQAEntries": "মোট প্রশ্নোত্তর",
+    "hitRate": "হিট রেট",
+    "totalCost": "মোট খরচ",
+    "unmatchedQuestions": "অমিলকৃত প্রশ্ন",
+    "pendingCount": "{{count}}টি অমীমাংসিত",
+    "processedCount": "{{count}}টি প্রক্রিয়াকৃত",
+    "runFlywheel": "ফ্লাইহুইল চালান",
+    "triggerGeneration": "তৈরি শুরু করুন",
+    "selectSubject": "বিষয় নির্বাচন করুন",
+    "interactionStats": "ইন্টারেকশন পরিসংখ্যান",
+    "costBreakdown": "খরচের বিবরণ",
+    "qaBankMatch": "ব্যাংক থেকে (বিনামূল্যে)",
+    "fallbackLLM": "ফলব্যাক LLM",
+    "resolution": "সমাধান"
+  },
+  "qaSource": {
+    "fromBank": "প্রশ্নোত্তর ব্যাংক থেকে",
+    "fromAI": "AI থেকে",
+    "confidence": "আত্মবিশ্বাস: {{score}}"
+  }
+}

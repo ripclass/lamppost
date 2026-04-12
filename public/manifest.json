@@ -1,0 +1,20 @@
+{
+  "name": "Lamppost — লেম্পোস্ট",
+  "short_name": "Lamppost",
+  "description": "AI-powered interactive classroom for Bangladesh & global education",
+  "start_url": "/curriculum",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a2e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["education"],
+  "lang": "en",
+  "dir": "ltr"
+}
