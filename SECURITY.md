@@ -1,10 +1,12 @@
-# Security Policy for OpenMAIC
+# Security Policy for Lamppost
 
-Thank you for helping us keep OpenMAIC secure! We take the security of our platform, multi-agent engine, and users very seriously. 
+Thank you for helping us keep Lamppost secure! We take the security of our platform, multi-agent engine, and users very seriously.
+
+Lamppost is a fork of [OpenMAIC](https://github.com/THU-MAIC/OpenMAIC). If you believe a vulnerability affects code inherited from the upstream (e.g. `lib/generation/`, `lib/orchestration/`, `lib/playback/`, `lib/action/`), please also consider reporting it to the OpenMAIC maintainers so upstream users are protected.
 
 ## Supported Versions
 
-We currently provide security updates for the latest major release and the active `main` branch. Please ensure you are running the most recent version of OpenMAIC before submitting a report.
+We currently provide security updates for the latest major release and the active `main` branch. Please ensure you are running the most recent version of Lamppost before submitting a report.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -14,10 +16,9 @@ We currently provide security updates for the latest major release and the activ
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in OpenMAIC, **please do not create a public GitHub issue.** Publicly disclosing a vulnerability can put other users and self-hosted instances at risk.
+If you discover a security vulnerability in Lamppost, **please do not create a public GitHub issue.** Publicly disclosing a vulnerability can put other users and self-hosted instances at risk.
 
-Instead, please report it privately using one of the following methods:
-**GitHub Private Vulnerability Reporting:** Go to the [Security tab](https://github.com/THU-MAIC/OpenMAIC/security) of the repository, click on "Advisories", and select "Report a vulnerability".
+Instead, please report it privately using GitHub Private Vulnerability Reporting: go to the **Security** tab of this repository, click on **Advisories**, and select **Report a vulnerability**.
 
 
 **What to include in your report:**

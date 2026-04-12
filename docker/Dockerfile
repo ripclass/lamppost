@@ -1,6 +1,7 @@
 # ============================================================
 # Lamppost Production Dockerfile
-# Based on the OpenMAIC Dockerfile with Lamppost extensions
+# Inherits the upstream OpenMAIC build stages, with Lamppost
+# cache directories mounted for offline lesson playback.
 # ============================================================
 
 # ---- Stage 1: Base ----

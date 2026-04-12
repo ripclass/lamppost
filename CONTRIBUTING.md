@@ -1,18 +1,20 @@
-# Contributing to OpenMAIC
+# Contributing to Lamppost
 
-Thank you for your interest in contributing to OpenMAIC! This guide will help you get started and ensure a smooth collaboration.
+Thank you for your interest in contributing to Lamppost! This guide will help you get started and ensure a smooth collaboration.
+
+> Lamppost is a fork of [OpenMAIC](https://github.com/THU-MAIC/OpenMAIC). For contributions to the upstream multi-agent classroom engine (scene generation, orchestration, playback, action engine), please open a PR against the OpenMAIC repository. For Lamppost-specific contributions (Q&A bank, Bangla localisation, curriculum pipeline, flywheel, admin dashboard), open a PR against this repository.
 
 ## How to Contribute
 
 | Contribution type | What to do |
 | --- | --- |
 | **Bug fix** | Open a PR directly (link the issue if one exists) |
-| **Extending existing features** (e.g. adding a new model provider, new TTS engine) | Open a PR directly |
-| **New feature or architecture change** | Start a [GitHub Discussion](https://github.com/THU-MAIC/OpenMAIC/discussions) or ask in [Discord](https://discord.gg/uJRzqXuC) **before** opening a PR |
-| **Design / UI change** | Discuss in a GitHub Discussion or Discord first — include mockups or screenshots |
+| **Q&A bank, curriculum, Bangla, or admin dashboard changes** | Open a PR directly against this repo |
+| **Upstream classroom engine changes** | PR against [OpenMAIC](https://github.com/THU-MAIC/OpenMAIC) instead — Lamppost pulls those from upstream |
+| **New feature or architecture change** | Open a GitHub issue on this repo describing the change **before** opening a PR |
+| **Design / UI change** | Open an issue first — include mockups or screenshots |
 | **Refactor-only PR** | Not accepted unless a maintainer explicitly requests it |
 | **Documentation** | Open a PR directly |
-| **Question** | Ask in [Discord](https://discord.gg/uJRzqXuC) |
 
 ## Claiming Issues
 
@@ -32,8 +34,8 @@ To avoid duplicate effort, please **comment on an issue** to claim it before you
 
 ```bash
 # Clone the repository
-git clone https://github.com/THU-MAIC/OpenMAIC.git
-cd OpenMAIC
+git clone https://github.com/ripclass/lamppost.git
+cd lamppost
 
 # Install dependencies
 pnpm install
@@ -131,33 +133,39 @@ AI-assisted PRs are held to the same quality standard as any other PR. Community
 ## Project Structure
 
 ```
-OpenMAIC/
+lamppost/
 ├── app/              # Next.js app router pages and API routes
 ├── components/       # React components
 ├── lib/              # Shared utilities and core logic
+│   ├── qa-bank/      # Q&A bank engine (Lamppost)
+│   ├── classroom-engine/  # Smart interaction handler (Lamppost)
+│   ├── curriculum/   # NCTB / Cambridge ingestion (Lamppost)
+│   ├── translate/    # Gemini Bangla translation (Lamppost)
+│   ├── db/           # Supabase client and queries (Lamppost)
+│   └── generation/   # Upstream OpenMAIC lesson generation (do not modify)
 ├── packages/         # Internal packages (mathml2omml, pptxgenjs)
 ├── public/           # Static assets
-├── messages/         # i18n translation files
+├── supabase/         # Database migrations (Lamppost)
 └── .github/          # Issue templates, PR template, CI workflows
 ```
 
 ## Reporting Bugs
 
-Use the [Bug Report](https://github.com/THU-MAIC/OpenMAIC/issues/new?template=bug_report.yml) issue template. Include:
+Open a bug report on this repository's issue tracker. Include:
 
 - Steps to reproduce
-- Expected vs. actual behavior
+- Expected vs. actual behaviour
 - Browser / OS / Node version
 - Screenshots or error logs if applicable
 
 ## Requesting Features
 
-Use the [Feature Request](https://github.com/THU-MAIC/OpenMAIC/issues/new?template=feature_request.yml) issue template. For larger features, please open a [Discussion](https://github.com/THU-MAIC/OpenMAIC/discussions) first.
+Open a feature request on this repository's issue tracker. For larger features, please file an issue describing the change before opening a PR.
 
 ## Security Vulnerabilities
 
-Please report security vulnerabilities through [GitHub Security Advisories](https://github.com/THU-MAIC/OpenMAIC/security/advisories/new). **Do not** open a public issue for security vulnerabilities.
+Please report security vulnerabilities through this repository's GitHub Security Advisories. **Do not** open a public issue for security vulnerabilities.
 
 ## License
 
-By contributing to OpenMAIC, you agree that your contributions will be licensed under the [AGPL-3.0 License](LICENSE).
+By contributing to Lamppost, you agree that your contributions will be licensed under the [AGPL-3.0 License](LICENSE), which is inherited from the upstream OpenMAIC project.

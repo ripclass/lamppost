@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+> **Lamppost note:** Lamppost is a fork of OpenMAIC. The entries below `## [0.1.0] - 2026-03-26` are inherited from the upstream OpenMAIC changelog and preserved verbatim for attribution. Lamppost-specific releases (Q&A bank, Bangla, curriculum, flywheel) will be tracked above this line as they ship.
+
+---
+
+## Upstream (OpenMAIC) changelog
+
 ## [0.1.0] - 2026-03-26
 
 The first tagged release of OpenMAIC, including all improvements since the initial open-source launch.

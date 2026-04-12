@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" width="520" height="120" role="img" aria-label="Lamppost">
+  <title>Lamppost</title>
+  <desc>Placeholder logo — replace with final Lamppost branding asset.</desc>
+  <g fill="none" stroke="#1a1a2e" stroke-linecap="round" stroke-width="6">
+    <line x1="60" y1="24" x2="60" y2="96" />
+    <line x1="42" y1="96" x2="78" y2="96" />
+    <path d="M60 24 Q90 24 90 44" />
+    <circle cx="90" cy="50" r="10" fill="#facc15" stroke="#b45309" />
+  </g>
+  <text x="120" y="70" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="54" font-weight="700" fill="#1a1a2e" letter-spacing="-1">Lamppost</text>
+  <text x="120" y="100" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="400" fill="#64748b">Interactive AI Classroom</text>
+</svg>

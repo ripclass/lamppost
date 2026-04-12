@@ -5,7 +5,7 @@
  * for offline playback in school deployments. A school in Rangpur with
  * intermittent internet can pre-download all lessons and run fully offline.
  *
- * Uses the Dexie library (already in OpenMAIC dependencies) for IndexedDB.
+ * Uses the Dexie library (inherited from the OpenMAIC upstream dependencies) for IndexedDB.
  */
 
 import Dexie, { type Table } from 'dexie';

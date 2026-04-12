@@ -17,9 +17,9 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'OpenMAIC',
+  title: 'Lamppost — Interactive AI Classroom',
   description:
-    'The open-source AI interactive classroom. Upload a PDF to instantly generate an immersive, multi-agent learning experience.',
+    'AI-powered interactive classroom for Bangladesh and global education. Upload a PDF or describe a topic to instantly generate an immersive, multi-agent learning experience in English or Bangla.',
 };
 
 export default function RootLayout({
