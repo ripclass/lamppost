@@ -95,6 +95,16 @@ PostgreSQL via Supabase with pgvector extension. Key tables:
 - Number system: configurable — Bengali numerals (০১২) or Western (012)
 - Text direction: LTR (same as English)
 
+## Bangla Educational Style Layer
+
+Opus generates Q&A bank content using a Bangla pedagogical style guide so answers feel like a Bangladeshi teacher wrote them, not a foreign AI.
+
+- The style guide is NOT content — it's presentation patterns extracted from Bangladeshi guidebooks (Panjeree, Lecture, Nobodoot style)
+- Lives at `lib/qa-bank/prompts/bangla-style-guide.ts`
+- Defines: answer structure per mark allocation (1/2/3/5/10-mark), Bangla transitional phrases (অর্থাৎ, সুতরাং, অতএব, যেমন), diagram-first conventions, key-term underlining patterns, numbered sub-point formatting with Bengali numerals, and the formal-term-then-English-bracket pattern (e.g. `বলবিদ্যা (Mechanics)`)
+- Injected into the Opus Q&A generation system prompt alongside `QA_BANK_GENERATION_SYSTEM_PROMPT`
+- **Content comes from NCTB textbooks (original). Style comes from the guide. Never copy guidebook content — only learn the voice.**
+
 ## Environment variables
 
 See `.env.example` for all required vars. Critical ones:
