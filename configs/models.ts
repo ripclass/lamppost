@@ -8,6 +8,8 @@
  * uses the cheapest model that can do the job well.
  */
 
+import { serverConfig } from '@/lib/config/server';
+
 export interface ModelConfig {
   provider: string;
   model: string;
@@ -41,7 +43,7 @@ export const MODEL_ROUTING = {
   /** Real-time fallback for unmatched classroom questions */
   classroomFallback: {
     provider: 'anthropic',
-    model: process.env.CLASSROOM_FALLBACK_MODEL ?? 'claude-sonnet-4-6',
+    model: serverConfig.CLASSROOM_FALLBACK_MODEL,
     description: 'Fallback for the 2-5% of questions not in Q&A bank',
     costPerMInput: 3,
     costPerMOutput: 15,

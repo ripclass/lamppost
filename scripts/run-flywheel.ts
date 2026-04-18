@@ -14,8 +14,12 @@
  * 4. Embeds and inserts new entries into the Q&A bank
  *
  * Designed to run as a cron job (FLYWHEEL_CRON=0 3 * * *)
+ *
+ * Requires: ANTHROPIC_API_KEY + Supabase keys in .env.local. See .env.example.
+ * Boot-time Zod validation in lib/config/server.ts will fail-fast if missing.
  */
 
+import '../lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY + Supabase keys
 import { collectFlywheelBatch, groupByChapter } from '../lib/qa-bank/flywheel';
 import { expandQABank } from '../lib/qa-bank/generator';
 import { getServiceClient } from '../lib/db/supabase';
@@ -24,11 +28,6 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   console.log('=== Q&A Bank Flywheel ===\n');
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY is required. Set it in .env.local');
-    process.exit(1);
-  }
 
   // Step 1: Collect pending unmatched questions
   const pending = await collectFlywheelBatch(args.chapterId);

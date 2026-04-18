@@ -9,8 +9,12 @@
  *
  * This calls Opus to generate 1,000-2,000 Q&A entries per chapter.
  * Cost: roughly $1-5 per chapter depending on content size.
+ *
+ * Requires: ANTHROPIC_API_KEY + Supabase keys in .env.local. See .env.example.
+ * Boot-time Zod validation in lib/config/server.ts will fail-fast if missing.
  */
 
+import '../lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY + Supabase keys
 import { generateQABank } from '../lib/qa-bank/generator';
 import { runBatchGeneration } from '../lib/curriculum/batch-generator';
 import { getChapter } from '../lib/db/queries/chapters';
@@ -19,11 +23,6 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   console.log('=== Q&A Bank Generation ===\n');
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY is required. Set it in .env.local');
-    process.exit(1);
-  }
 
   if (args.chapterId) {
     // Single chapter mode

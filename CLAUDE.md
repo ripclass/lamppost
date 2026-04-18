@@ -129,9 +129,9 @@ Three route trees, each with its own layout, auth model, and design language:
 
 Sidebar nav is defined in `app/admin/layout.tsx` and filtered by `canAccessAdminSection(session.role, section)` from `lib/auth/roles.ts`.
 
-### Legacy creator flow
+### Legacy creator flow — removed
 
-The upstream OpenMAIC creator UI (PDF upload → one-off classroom generation) lives at `/admin/creator` — admin-only, not in the sidebar. Lamppost's content pipeline is batch-driven via `/admin/content/generate`; the legacy creator is preserved only for experiments. It will break once Step 3 purges BYOK and may be removed then.
+The upstream OpenMAIC creator UI (`/admin/creator`, `/generation-preview`, `/classroom/[id]`, `/curriculum/*`) was deleted in Phase A Step 3. Lamppost's content pipeline is batch-driven via `/admin/content/generate`; the interactive creator is philosophically incompatible with Lamppost's pre-generated Q&A bank architecture. Rendering primitives (`components/slide-renderer/`, `components/whiteboard/`) and playback infrastructure (`lib/audio/`, `lib/media/`, `lib/pdf/`) were preserved for Step 4's student classroom.
 
 Guards live in `proxy.ts` (Next.js 16 renames `middleware.ts` → `proxy.ts`). It uses `lib/auth/proxy-session.ts` to refresh the Supabase cookie and read the joined `users.role` on every request.
 
@@ -141,9 +141,9 @@ Server-side session helpers: `lib/auth/server.ts` (`getSession`, `requireSession
 
 **End users NEVER see or configure API keys.** All LLM, TTS, ASR, PDF, Image, Video, and Web Search provider keys live in `process.env` and are validated at boot by `lib/config/server.ts` (Zod schema). Import `serverConfig` wherever a key is needed. Client code must never reference a key.
 
-The admin System section may surface provider *status* (`providerStatus` boolean map from `lib/config/server.ts`) as read-only signals — not the keys themselves.
+The admin System section may surface provider *status* (`providerStatus` from `lib/config/server.ts`) as read-only booleans + per-category counts — never the keys themselves.
 
-BYOK removal is Phase A Step 3 — settings UI for keys, Zustand provider slices, and API routes that accept keys are all being deleted.
+BYOK purge completed in Phase A Step 3 (commit `484b725`): the settings UI for keys, the Zustand provider slices, the API routes that parsed keys from client bodies/headers, and the entire OpenMAIC creator-flow surface were all deleted. Any new API route that accepts a key from a request body or header is a regression.
 
 ## Admin role model
 
@@ -171,9 +171,16 @@ Admin section visibility (`lib/auth/roles.ts` → `ADMIN_SECTION_ACCESS`):
 
 Never add role-specific columns to `users`. Add them to the matching extension.
 
-## Rate limiting
+## Rate limiting conventions
 
-`user_usage_daily` tracks both authenticated users (by `user_id`) and anonymous onboarding sessions (by `anonymous_session_token` + IP hash). A CHECK constraint enforces exactly one of the two keys is set per row. Default caps: anonymous = 10 interactions per sample chapter, free-tier = 15/day, paid-tier = unlimited (override via `RATE_LIMIT_*` env vars).
+`user_usage_daily` keys off either `user_id` (authenticated) or `anonymous_session_token` (anonymous onboarding session). A CHECK constraint enforces exactly one of the two keys is set per row.
+
+- Anonymous cap: `RATE_LIMIT_ANON_SAMPLE` (default 10 interactions on the sample chapter)
+- Authenticated cap: `RATE_LIMIT_FREE_DAILY` (default 15/day)
+- Paid tier: currently NOT distinguished — all authenticated users use the free-tier cap. When billing ships (Phase B+), add a `users.tier` column and branch the cap.
+- The limiter is **soft** by design: `lib/db/queries/user-usage.ts` does a check-then-update, not an atomic Postgres RPC. The effective cap is `cap ± concurrency` — acceptable for UX caps, not billing-grade. Tighten with a Postgres function if strict enforcement is ever needed.
+- On cap, `lib/classroom-engine/interaction-handler.ts` throws `RateLimitError` (from `lib/classroom-engine/types.ts`) carrying `scope: 'anon' | 'free'` and `limit: number`. API routes catch this and return HTTP 429 with a typed payload so the client can render appropriate messaging.
+- The rate limit is checked **before** any embedding or LLM work, so Q&A-bank-only interactions still count toward the cap (intentional — anon's sample chapter is a UX window, not a cost window).
 
 ## What NOT to do
 

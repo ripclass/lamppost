@@ -14,6 +14,7 @@
  */
 
 import { createLogger } from '@/lib/logger';
+import { serverConfig } from '@/lib/config/server';
 import { embedTexts } from './embedder';
 import { insertQAEntries } from '@/lib/db/queries/qa-bank';
 import { getServiceClient } from '@/lib/db/supabase';
@@ -230,8 +231,7 @@ export async function expandQABank(params: {
   const batchId = crypto.randomUUID();
 
   try {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) throw new Error('ANTHROPIC_API_KEY is required');
+    const apiKey = serverConfig.ANTHROPIC_API_KEY;
 
     const userPrompt = buildExpansionUserPrompt(
       params.unmatchedQuestions,
@@ -331,8 +331,7 @@ async function callOpusForQA(
   input: GenerationInput,
   batchId: string,
 ): Promise<OpusCallResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY is required for Q&A generation');
+  const apiKey = serverConfig.ANTHROPIC_API_KEY;
 
   const model = process.env.GENERATION_MODEL ?? 'claude-opus-4-6';
   const userPrompt = buildGenerationUserPrompt(input);

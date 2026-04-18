@@ -3,9 +3,11 @@ import { routeToFallback } from './fallback-router';
 import { wrapResponse } from './response-wrapper';
 import { logClassroomInteraction } from './interaction-logger';
 import { incrementMatchCount, insertUnmatchedQuestion } from '@/lib/db/queries/qa-bank';
+import { incrementDailyUsage, type UsageKey } from '@/lib/db/queries/user-usage';
 import { embedText } from '@/lib/qa-bank/embedder';
 import { createLogger } from '@/lib/logger';
-import type { StudentInput, ClassroomResponse } from './types';
+import { serverConfig } from '@/lib/config/server';
+import { RateLimitError, type StudentInput, type ClassroomResponse } from './types';
 
 const log = createLogger('InteractionHandler');
 
@@ -24,6 +26,22 @@ export async function handleStudentInteraction(
   input: StudentInput,
 ): Promise<ClassroomResponse> {
   const startTime = Date.now();
+
+  // Step 0: Rate limit check. Anonymous onboarding sessions are capped at
+  // RATE_LIMIT_ANON_SAMPLE total interactions on the sample chapter;
+  // authenticated free-tier users get RATE_LIMIT_FREE_DAILY per day.
+  const scope: 'anon' | 'free' = input.studentId ? 'free' : 'anon';
+  const limit = input.studentId
+    ? serverConfig.RATE_LIMIT_FREE_DAILY
+    : serverConfig.RATE_LIMIT_ANON_SAMPLE;
+  const usageKey: UsageKey = input.studentId
+    ? { userId: input.studentId }
+    : { anonymousSessionToken: input.sessionId };
+  const count = await incrementDailyUsage(usageKey);
+  if (count > limit) {
+    log.info(`Rate limit hit: scope=${scope}, count=${count}, limit=${limit}`);
+    throw new RateLimitError(scope, limit);
+  }
 
   // Step 1: Route through Q&A bank
   const decision = await matchQuestion({

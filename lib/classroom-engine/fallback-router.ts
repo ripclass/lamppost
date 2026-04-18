@@ -1,4 +1,5 @@
 import { createLogger } from '@/lib/logger';
+import { serverConfig } from '@/lib/config/server';
 import type { FallbackRequest, FallbackResponse } from './types';
 
 const log = createLogger('FallbackRouter');
@@ -14,7 +15,7 @@ const log = createLogger('FallbackRouter');
  * across all students, so it's cached once and reused.
  */
 export async function routeToFallback(request: FallbackRequest): Promise<FallbackResponse> {
-  const model = process.env.CLASSROOM_FALLBACK_MODEL ?? 'claude-sonnet-4-6';
+  const model = serverConfig.CLASSROOM_FALLBACK_MODEL;
 
   log.info(`Fallback to ${model} for: "${request.question.slice(0, 60)}..."`);
 
@@ -56,10 +57,7 @@ async function callClaudeFallback(
   systemPrompt: string,
   question: string,
 ): Promise<FallbackResponse> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY is required for Claude fallback');
-  }
+  const apiKey = serverConfig.ANTHROPIC_API_KEY;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',

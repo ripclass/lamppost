@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { runBatchGeneration } from '@/lib/curriculum/batch-generator';
 import { apiError, apiSuccess } from '@/lib/server/api-response';
 import { createLogger } from '@/lib/logger';
+import '@/lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY
 
 const log = createLogger('API:BatchGenerate');
 
@@ -19,15 +20,6 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as Record<string, unknown>;
     const subjectId = body.subjectId as string | undefined;
     const targetEntriesPerChapter = body.targetEntriesPerChapter as number | undefined;
-
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return apiError(
-        'MISSING_API_KEY',
-        500,
-        'ANTHROPIC_API_KEY is required for batch generation',
-      );
-    }
 
     log.info(
       `Batch generation triggered` +

@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { apiError, apiSuccess } from '@/lib/server/api-response';
 import { createLogger } from '@/lib/logger';
+import '@/lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY
 
 const log = createLogger('API:QAGenerate');
 
@@ -23,15 +24,6 @@ export async function POST(request: NextRequest) {
 
     if (!chapterId || typeof chapterId !== 'string') {
       return apiError('MISSING_REQUIRED_FIELD', 400, 'chapterId is required');
-    }
-
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return apiError(
-        'MISSING_API_KEY',
-        500,
-        'ANTHROPIC_API_KEY is required for Q&A generation',
-      );
     }
 
     // Phase 2: This will call the Opus generation pipeline
