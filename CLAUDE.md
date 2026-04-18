@@ -123,6 +123,16 @@ Three route trees, each with its own layout, auth model, and design language:
 - `app/app/` — student portal (authenticated student/parent)
 - `app/admin/` — admin portal (role-gated; see Admin role model below)
 
+### Admin sections (9)
+
+`/admin` Overview, `/admin/users`, `/admin/billing`, `/admin/content` (+ `content/generate` batch dashboard + `content/[chapterId]` three-panel editor in Step 6), `/admin/flywheel` (+ `flywheel/proposed` + `flywheel/health`), `/admin/costs` (+ `costs/calculator`), `/admin/system` (+ `system/audit`), `/admin/notifications`, `/admin/team`.
+
+Sidebar nav is defined in `app/admin/layout.tsx` and filtered by `canAccessAdminSection(session.role, section)` from `lib/auth/roles.ts`.
+
+### Legacy creator flow
+
+The upstream OpenMAIC creator UI (PDF upload → one-off classroom generation) lives at `/admin/creator` — admin-only, not in the sidebar. Lamppost's content pipeline is batch-driven via `/admin/content/generate`; the legacy creator is preserved only for experiments. It will break once Step 3 purges BYOK and may be removed then.
+
 Guards live in `proxy.ts` (Next.js 16 renames `middleware.ts` → `proxy.ts`). It uses `lib/auth/proxy-session.ts` to refresh the Supabase cookie and read the joined `users.role` on every request.
 
 Server-side session helpers: `lib/auth/server.ts` (`getSession`, `requireSession`). Roles helper: `lib/auth/roles.ts`. Anonymous onboarding session cookie + CRUD: `lib/auth/anonymous.ts`. Anonymous → authenticated conversion: `lib/auth/migrate.ts` + SQL RPC `rpc_convert_onboarding_session`.
