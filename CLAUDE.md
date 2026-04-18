@@ -114,14 +114,68 @@ See `.env.example` for all required vars. Critical ones:
 - `NEXT_PUBLIC_SUPABASE_URL` + keys — database
 - `QA_SIMILARITY_THRESHOLD` — defaults to 0.85
 
+## Portal architecture (Phase A)
+
+Three route trees, each with its own layout, auth model, and design language:
+
+- `app/(marketing)/` — public landing, pricing, about (public)
+- `app/(onboarding)/` — pre-signup `/try` → `/signup` → `/personalize` (public, anonymous session cookie)
+- `app/app/` — student portal (authenticated student/parent)
+- `app/admin/` — admin portal (role-gated; see Admin role model below)
+
+Guards live in `proxy.ts` (Next.js 16 renames `middleware.ts` → `proxy.ts`). It uses `lib/auth/proxy-session.ts` to refresh the Supabase cookie and read the joined `users.role` on every request.
+
+Server-side session helpers: `lib/auth/server.ts` (`getSession`, `requireSession`). Roles helper: `lib/auth/roles.ts`. Anonymous onboarding session cookie + CRUD: `lib/auth/anonymous.ts`. Anonymous → authenticated conversion: `lib/auth/migrate.ts` + SQL RPC `rpc_convert_onboarding_session`.
+
+## API key policy
+
+**End users NEVER see or configure API keys.** All LLM, TTS, ASR, PDF, Image, Video, and Web Search provider keys live in `process.env` and are validated at boot by `lib/config/server.ts` (Zod schema). Import `serverConfig` wherever a key is needed. Client code must never reference a key.
+
+The admin System section may surface provider *status* (`providerStatus` boolean map from `lib/config/server.ts`) as read-only signals — not the keys themselves.
+
+BYOK removal is Phase A Step 3 — settings UI for keys, Zustand provider slices, and API routes that accept keys are all being deleted.
+
+## Admin role model
+
+`users.role` enum values: `student`, `parent`, `super_admin`, `content_editor`, `support_agent`, `finance_viewer`, `infra_engineer`, `read_only`.
+
+Admin section visibility (`lib/auth/roles.ts` → `ADMIN_SECTION_ACCESS`):
+
+| Role | Sections |
+|------|----------|
+| super_admin | All 9 sections |
+| content_editor | content, flywheel |
+| support_agent | users, billing |
+| finance_viewer | billing, costs |
+| infra_engineer | system, costs |
+| read_only | All 9 sections (no write) |
+
+`isAdminRole()` gates the admin route tree. `canAccessAdminSection(role, section)` gates sidebar links and API routes.
+
+## Users table (extension-per-role pattern)
+
+- `users` — root profile (id, auth_id, role, display_name, phone, email, language_preference, theme_preference, created_at, updated_at)
+- `students` — 1:1 extension where `students.id = users.id`, holds curriculum/grade/target_exam_date/daily_minutes_commitment
+- `parents` — 1:1 extension + `parent_student_links` join table
+- `admin_profiles` — 1:1 extension for admin-role users (assigned_team, permission_overrides, is_active)
+
+Never add role-specific columns to `users`. Add them to the matching extension.
+
+## Rate limiting
+
+`user_usage_daily` tracks both authenticated users (by `user_id`) and anonymous onboarding sessions (by `anonymous_session_token` + IP hash). A CHECK constraint enforces exactly one of the two keys is set per row. Default caps: anonymous = 10 interactions per sample chapter, free-tier = 15/day, paid-tier = unlimited (override via `RATE_LIMIT_*` env vars).
+
 ## What NOT to do
 
 - Do NOT generate lessons in Bangla directly — always English first, then translate
 - Do NOT call Opus for real-time classroom interactions — that's what the Q&A bank is for
 - Do NOT store embeddings in JSON files — use pgvector in Supabase
 - Do NOT delete or modify existing OpenMAIC files under `lib/generation/`, `lib/orchestration/`, `lib/playback/`, `lib/action/`
-- Do NOT hardcode API keys — always use environment variables
+- Do NOT expose LLM/TTS/ASR/PDF/Image/Video/Web Search provider keys to Client Components — keys are server-only via `serverConfig`
+- Do NOT accept API keys from request bodies or headers in new API routes — use `serverConfig`
+- Do NOT write `users`-table columns for role-specific data — use the matching extension table (`students`, `parents`, `admin_profiles`)
 - Do NOT skip interaction logging — the flywheel depends on complete data
+- Do NOT create `middleware.ts` at repo root — Next.js 16 uses `proxy.ts` (export `proxy`, `proxyConfig`)
 
 ## References
 
