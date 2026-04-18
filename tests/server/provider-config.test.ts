@@ -32,26 +32,15 @@ describe('provider-config', () => {
   });
 
   describe('resolveApiKey', () => {
-    it('returns client key when provided', async () => {
-      const { resolveApiKey } = await import('@/lib/server/provider-config');
-      expect(resolveApiKey('openai', 'sk-client')).toBe('sk-client');
-    });
-
-    it('returns server key from env when no client key', async () => {
+    it('returns server key from env', async () => {
       vi.stubEnv('OPENAI_API_KEY', 'sk-server');
       const { resolveApiKey } = await import('@/lib/server/provider-config');
       expect(resolveApiKey('openai')).toBe('sk-server');
     });
 
-    it('returns empty string when neither client nor server key exists', async () => {
+    it('returns empty string when no server key exists', async () => {
       const { resolveApiKey } = await import('@/lib/server/provider-config');
       expect(resolveApiKey('openai')).toBe('');
-    });
-
-    it('prefers client key over server key', async () => {
-      vi.stubEnv('OPENAI_API_KEY', 'sk-server');
-      const { resolveApiKey } = await import('@/lib/server/provider-config');
-      expect(resolveApiKey('openai', 'sk-client')).toBe('sk-client');
     });
 
     it('resolves non-OpenAI providers via their env prefix', async () => {
@@ -67,19 +56,14 @@ describe('provider-config', () => {
   });
 
   describe('resolveBaseUrl', () => {
-    it('returns client URL when provided', async () => {
-      const { resolveBaseUrl } = await import('@/lib/server/provider-config');
-      expect(resolveBaseUrl('openai', 'https://custom.api.com')).toBe('https://custom.api.com');
-    });
-
-    it('returns server URL from env when no client URL', async () => {
+    it('returns server URL from env', async () => {
       vi.stubEnv('OPENAI_API_KEY', 'sk-test');
       vi.stubEnv('OPENAI_BASE_URL', 'https://proxy.example.com/v1');
       const { resolveBaseUrl } = await import('@/lib/server/provider-config');
       expect(resolveBaseUrl('openai')).toBe('https://proxy.example.com/v1');
     });
 
-    it('returns undefined when neither client nor server URL exists', async () => {
+    it('returns undefined when no server URL exists', async () => {
       const { resolveBaseUrl } = await import('@/lib/server/provider-config');
       expect(resolveBaseUrl('openai')).toBeUndefined();
     });
@@ -155,15 +139,15 @@ providers:
   });
 
   describe('resolveWebSearchApiKey', () => {
-    it('returns client key first', async () => {
-      const { resolveWebSearchApiKey } = await import('@/lib/server/provider-config');
-      expect(resolveWebSearchApiKey('client-key')).toBe('client-key');
-    });
-
-    it('falls back to TAVILY_API_KEY env var', async () => {
+    it('returns server key from TAVILY_API_KEY env var', async () => {
       vi.stubEnv('TAVILY_API_KEY', 'tvly-bare-env');
       const { resolveWebSearchApiKey } = await import('@/lib/server/provider-config');
       expect(resolveWebSearchApiKey()).toBe('tvly-bare-env');
+    });
+
+    it('returns empty string when no key configured', async () => {
+      const { resolveWebSearchApiKey } = await import('@/lib/server/provider-config');
+      expect(resolveWebSearchApiKey()).toBe('');
     });
   });
 

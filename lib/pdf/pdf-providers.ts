@@ -448,14 +448,12 @@ export async function getCurrentPDFConfig(): Promise<PDFParserConfig> {
 
   // Dynamic import to avoid circular dependency
   const { useSettingsStore } = await import('@/lib/store/settings');
-  const { pdfProviderId, pdfProvidersConfig } = useSettingsStore.getState();
-
-  const providerConfig = pdfProvidersConfig?.[pdfProviderId];
+  const { pdfProviderId } = useSettingsStore.getState();
 
   return {
     providerId: pdfProviderId,
-    apiKey: providerConfig?.apiKey,
-    baseUrl: providerConfig?.baseUrl,
+    apiKey: undefined,
+    baseUrl: undefined,
   };
 }
 

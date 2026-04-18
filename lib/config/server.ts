@@ -1,4 +1,13 @@
 import { z } from 'zod';
+import {
+  getServerProviders,
+  getServerTTSProviders,
+  getServerASRProviders,
+  getServerPDFProviders,
+  getServerImageProviders,
+  getServerVideoProviders,
+  getServerWebSearchProviders,
+} from '@/lib/server/provider-config';
 
 /**
  * Server-only configuration.
@@ -65,6 +74,7 @@ const schema = z.object({
   MODEL_TRANSLATION: nonEmpty.default('gemini-3-flash'),
   MODEL_EMBEDDING: nonEmpty.default('nomic-embed-text'),
   MODEL_OFFLINE_CLASSROOM: nonEmpty.default('gemma3:12b'),
+  CLASSROOM_FALLBACK_MODEL: nonEmpty.default('claude-sonnet-4-6'),
 });
 
 export type ServerConfig = z.infer<typeof schema>;
@@ -88,6 +98,10 @@ export const serverConfig: ServerConfig = load();
 /**
  * Provider availability flags — safe to surface in the admin Providers
  * sub-page as read-only booleans. Never leak the keys themselves.
+ *
+ * `categories` carries per-category counts resolved from provider-config.ts
+ * (YAML + env vars). This replaces the old /api/server-providers endpoint
+ * and the client-side fetchServerProviders() merge.
  */
 export const providerStatus = {
   anthropic: Boolean(serverConfig.ANTHROPIC_API_KEY),
@@ -105,6 +119,15 @@ export const providerStatus = {
   ),
   postmark: Boolean(serverConfig.POSTMARK_SERVER_TOKEN && serverConfig.POSTMARK_FROM_EMAIL),
   ollama: true,
+  categories: {
+    llm: Object.keys(getServerProviders()).length,
+    tts: Object.keys(getServerTTSProviders()).length,
+    asr: Object.keys(getServerASRProviders()).length,
+    pdf: Object.keys(getServerPDFProviders()).length,
+    image: Object.keys(getServerImageProviders()).length,
+    video: Object.keys(getServerVideoProviders()).length,
+    webSearch: Object.keys(getServerWebSearchProviders()).length,
+  },
 } as const;
 
 export type ProviderStatus = typeof providerStatus;

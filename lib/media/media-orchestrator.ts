@@ -188,7 +188,6 @@ async function callImageApi(
   abortSignal?: AbortSignal,
 ): Promise<{ url: string }> {
   const settings = useSettingsStore.getState();
-  const providerConfig = settings.imageProvidersConfig?.[settings.imageProviderId];
 
   const response = await fetch('/api/generate/image', {
     method: 'POST',
@@ -196,8 +195,6 @@ async function callImageApi(
       'Content-Type': 'application/json',
       'x-image-provider': settings.imageProviderId || '',
       'x-image-model': settings.imageModelId || '',
-      'x-api-key': providerConfig?.apiKey || '',
-      'x-base-url': providerConfig?.baseUrl || '',
     },
     body: JSON.stringify({
       prompt: req.prompt,
@@ -228,7 +225,6 @@ async function callVideoApi(
   abortSignal?: AbortSignal,
 ): Promise<{ url: string; poster?: string }> {
   const settings = useSettingsStore.getState();
-  const providerConfig = settings.videoProvidersConfig?.[settings.videoProviderId];
 
   const response = await fetch('/api/generate/video', {
     method: 'POST',
@@ -236,8 +232,6 @@ async function callVideoApi(
       'Content-Type': 'application/json',
       'x-video-provider': settings.videoProviderId || '',
       'x-video-model': settings.videoModelId || '',
-      'x-api-key': providerConfig?.apiKey || '',
-      'x-base-url': providerConfig?.baseUrl || '',
     },
     body: JSON.stringify({
       prompt: req.prompt,

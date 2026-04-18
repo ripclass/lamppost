@@ -24,14 +24,9 @@ export async function POST(req: NextRequest) {
   let query: string | undefined;
   try {
     const body = await req.json();
-    const {
-      query: requestQuery,
-      pdfText,
-      apiKey: clientApiKey,
-    } = body as {
+    const { query: requestQuery, pdfText } = body as {
       query?: string;
       pdfText?: string;
-      apiKey?: string;
     };
     query = requestQuery;
 
@@ -39,12 +34,12 @@ export async function POST(req: NextRequest) {
       return apiError('MISSING_REQUIRED_FIELD', 400, 'query is required');
     }
 
-    const apiKey = resolveWebSearchApiKey(clientApiKey);
+    const apiKey = resolveWebSearchApiKey();
     if (!apiKey) {
       return apiError(
         'MISSING_API_KEY',
         400,
-        'Tavily API key is not configured. Set it in Settings → Web Search or set TAVILY_API_KEY env var.',
+        'Tavily API key is not configured. Set TAVILY_API_KEY env var.',
       );
     }
 

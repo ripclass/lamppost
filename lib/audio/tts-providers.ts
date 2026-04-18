@@ -469,15 +469,13 @@ export async function getCurrentTTSConfig(): Promise<TTSModelConfig> {
 
   // Lazy import to avoid circular dependency
   const { useSettingsStore } = await import('@/lib/store/settings');
-  const { ttsProviderId, ttsVoice, ttsSpeed, ttsProvidersConfig } = useSettingsStore.getState();
-
-  const providerConfig = ttsProvidersConfig?.[ttsProviderId];
+  const { ttsProviderId, ttsVoice, ttsSpeed } = useSettingsStore.getState();
 
   return {
     providerId: ttsProviderId,
-    modelId: providerConfig?.modelId || TTS_PROVIDERS[ttsProviderId]?.defaultModelId || '',
-    apiKey: providerConfig?.apiKey,
-    baseUrl: providerConfig?.baseUrl,
+    modelId: TTS_PROVIDERS[ttsProviderId]?.defaultModelId || '',
+    apiKey: undefined,
+    baseUrl: undefined,
     voice: ttsVoice,
     speed: ttsSpeed,
   };
