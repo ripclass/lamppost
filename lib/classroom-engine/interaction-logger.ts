@@ -18,7 +18,11 @@ export async function logClassroomInteraction(params: {
   interactionType: 'question' | 'quiz_answer' | 'whiteboard_request' | 'voice_input';
   studentInput: string;
   studentInputEmbedding?: number[];
-  resolutionType: 'qa_bank_match' | 'fallback_llm' | 'pre_baked_playback';
+  resolutionType:
+    | 'qa_bank_match'
+    | 'fallback_llm'
+    | 'pre_baked_playback'
+    | 'rate_limit_block';
   qaBankId?: string;
   similarityScore?: number;
   response: string;

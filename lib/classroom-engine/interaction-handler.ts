@@ -26,17 +26,20 @@ export async function handleStudentInteraction(
   input: StudentInput,
 ): Promise<ClassroomResponse> {
   const startTime = Date.now();
+  const { identity } = input;
 
-  // Step 0: Rate limit check. Anonymous onboarding sessions are capped at
-  // RATE_LIMIT_ANON_SAMPLE total interactions on the sample chapter;
-  // authenticated free-tier users get RATE_LIMIT_FREE_DAILY per day.
-  const scope: 'anon' | 'free' = input.studentId ? 'free' : 'anon';
-  const limit = input.studentId
-    ? serverConfig.RATE_LIMIT_FREE_DAILY
-    : serverConfig.RATE_LIMIT_ANON_SAMPLE;
-  const usageKey: UsageKey = input.studentId
-    ? { userId: input.studentId }
-    : { anonymousSessionToken: input.sessionId };
+  // Step 0: Rate limit check. Anon uses the opaque nanoid session_token
+  // against user_usage_daily.anonymous_session_token (TEXT); authed uses
+  // studentId against user_usage_daily.user_id (UUID). See types.ts Identity.
+  const scope: 'anon' | 'free' = identity.type === 'authed' ? 'free' : 'anon';
+  const limit =
+    identity.type === 'authed'
+      ? serverConfig.RATE_LIMIT_FREE_DAILY
+      : serverConfig.RATE_LIMIT_ANON_SAMPLE;
+  const usageKey: UsageKey =
+    identity.type === 'authed'
+      ? { userId: identity.studentId }
+      : { anonymousSessionToken: identity.sessionToken };
   const count = await incrementDailyUsage(usageKey);
   if (count > limit) {
     log.info(`Rate limit hit: scope=${scope}, count=${count}, limit=${limit}`);
@@ -72,9 +75,9 @@ export async function handleStudentInteraction(
 
     // Log + increment (fire-and-forget, don't block the response)
     logClassroomInteraction({
-      studentId: input.studentId,
+      studentId: identity.type === 'authed' ? identity.studentId : undefined,
       chapterId: input.chapterId,
-      sessionId: input.sessionId,
+      sessionId: identity.sessionId,
       interactionType: 'question',
       studentInput: input.text,
       resolutionType: 'qa_bank_match',
@@ -126,9 +129,9 @@ export async function handleStudentInteraction(
 
   // Log interaction
   logClassroomInteraction({
-    studentId: input.studentId,
+    studentId: identity.type === 'authed' ? identity.studentId : undefined,
     chapterId: input.chapterId,
-    sessionId: input.sessionId,
+    sessionId: identity.sessionId,
     interactionType: 'question',
     studentInput: input.text,
     resolutionType: 'fallback_llm',
@@ -146,7 +149,7 @@ export async function handleStudentInteraction(
     .then((embedding) =>
       insertUnmatchedQuestion({
         chapterId: input.chapterId,
-        studentId: input.studentId,
+        studentId: identity.type === 'authed' ? identity.studentId : undefined,
         question: input.text,
         questionEmbedding: embedding,
         fallbackAnswer: fallbackResponse.text,

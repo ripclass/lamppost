@@ -1,10 +1,9 @@
 import { searchQABank } from './search';
 import { createLogger } from '@/lib/logger';
+import { serverConfig } from '@/lib/config/server';
 import type { QASearchParams, RouterDecision } from './types';
 
 const log = createLogger('QARouter');
-
-const QA_SIMILARITY_THRESHOLD = Number(process.env.QA_SIMILARITY_THRESHOLD ?? '0.85');
 
 /**
  * The Q&A Router — the core decision engine.
@@ -17,15 +16,16 @@ const QA_SIMILARITY_THRESHOLD = Number(process.env.QA_SIMILARITY_THRESHOLD ?? '0
  * 95%+ of interactions are resolved from the bank at zero marginal cost.
  */
 export async function routeQuestion(params: QASearchParams): Promise<RouterDecision> {
+  const threshold = serverConfig.QA_SIMILARITY_THRESHOLD;
   const searchResult = await searchQABank(params);
 
   const bestMatch = searchResult.bestMatch;
   const similarity = bestMatch?.similarity ?? 0;
-  const shouldEscalate = similarity < QA_SIMILARITY_THRESHOLD;
+  const shouldEscalate = similarity < threshold;
 
   if (!shouldEscalate && bestMatch) {
     log.info(
-      `MATCH (${similarity.toFixed(3)} >= ${QA_SIMILARITY_THRESHOLD}): ` +
+      `MATCH (${similarity.toFixed(3)} >= ${threshold}): ` +
         `"${params.question.slice(0, 50)}..." → Q&A #${bestMatch.entry.id}`,
     );
 
@@ -38,7 +38,7 @@ export async function routeQuestion(params: QASearchParams): Promise<RouterDecis
   }
 
   log.info(
-    `ESCALATE (${similarity.toFixed(3)} < ${QA_SIMILARITY_THRESHOLD}): ` +
+    `ESCALATE (${similarity.toFixed(3)} < ${threshold}): ` +
       `"${params.question.slice(0, 50)}..."`,
   );
 

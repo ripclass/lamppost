@@ -181,6 +181,23 @@ Never add role-specific columns to `users`. Add them to the matching extension.
 - The limiter is **soft** by design: `lib/db/queries/user-usage.ts` does a check-then-update, not an atomic Postgres RPC. The effective cap is `cap ± concurrency` — acceptable for UX caps, not billing-grade. Tighten with a Postgres function if strict enforcement is ever needed.
 - On cap, `lib/classroom-engine/interaction-handler.ts` throws `RateLimitError` (from `lib/classroom-engine/types.ts`) carrying `scope: 'anon' | 'free'` and `limit: number`. API routes catch this and return HTTP 429 with a typed payload so the client can render appropriate messaging.
 - The rate limit is checked **before** any embedding or LLM work, so Q&A-bank-only interactions still count toward the cap (intentional — anon's sample chapter is a UX window, not a cost window).
+- Daily window is **Asia/Dhaka**, not UTC — both `user_usage_daily.date` (migration 010 default) and `lib/db/queries/user-usage.ts#todayInDhaka` roll over at Bangladesh midnight. The 429 response sets `Retry-After` (integer seconds) and a `resetAt` ISO field in the body, both pointing at the next Asia/Dhaka midnight.
+
+## Classroom interaction identity
+
+`handleStudentInteraction` takes an `Identity` discriminated union (exported from `lib/classroom-engine/types.ts`):
+
+```ts
+type Identity =
+  | { type: 'anon'; sessionToken: string; sessionId: string }
+  | { type: 'authed'; studentId: string; sessionId: string };
+```
+
+The invariant is load-bearing:
+- `sessionId` is **always** a UUID. It maps to `student_interactions.session_id` (UUID column). For anon it's `onboarding_sessions.id`; for authed it's the auth session's UUID.
+- `sessionToken` (anon only) is the opaque nanoid from the `lp_onb` cookie. It maps to `user_usage_daily.anonymous_session_token` (TEXT column). Never use it for logging — it's the wrong column type and it's the cookie secret.
+
+API routes that call the interaction handler must construct `Identity` from their own auth context (for authed) or from `getOrCreateOnboardingSession()` (for anon). The `ClassroomPlayer` component takes the same `Identity` shape as a prop and forwards it to `/api/qa-bank/search`.
 
 ## What NOT to do
 

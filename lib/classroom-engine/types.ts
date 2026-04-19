@@ -5,11 +5,25 @@
  * and either serves a pre-built answer or escalates to a fallback LLM.
  */
 
+/**
+ * Identity of the caller.
+ *
+ * `sessionId` is always a UUID — it matches `student_interactions.session_id`
+ * (UUID column) for logging. For anon, it's `onboarding_sessions.id`; for
+ * authed, it's the auth session's UUID.
+ *
+ * `sessionToken` (anon only) is the opaque nanoid stored in the `lp_onb`
+ * cookie — it matches `user_usage_daily.anonymous_session_token` (TEXT column)
+ * for rate limiting. Never use this for logging.
+ */
+export type Identity =
+  | { type: 'anon'; sessionToken: string; sessionId: string }
+  | { type: 'authed'; studentId: string; sessionId: string };
+
 export interface StudentInput {
   text: string;
   chapterId: string;
-  studentId?: string;
-  sessionId: string;
+  identity: Identity;
   sceneIndex: number;
   language: 'en' | 'bn';
 }

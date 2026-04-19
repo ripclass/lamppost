@@ -86,10 +86,5 @@ export const MODEL_ROUTING = {
   },
 } as const satisfies Record<string, ModelConfig>;
 
-/** Q&A bank similarity threshold */
-export const QA_SIMILARITY_THRESHOLD = Number(
-  process.env.QA_SIMILARITY_THRESHOLD ?? '0.85',
-);
-
 /** Embedding dimensions (nomic-embed-text v1.5) */
 export const EMBEDDING_DIMENSIONS = 768;
