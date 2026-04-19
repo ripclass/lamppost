@@ -104,6 +104,7 @@ function rateLimitResponse(
 
   logClassroomInteraction({
     studentId: identity.type === 'authed' ? identity.studentId : undefined,
+    anonymousSessionId: identity.type === 'anon' ? identity.sessionId : undefined,
     chapterId,
     sessionId: identity.sessionId,
     interactionType: 'question',

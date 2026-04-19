@@ -199,6 +199,37 @@ The invariant is load-bearing:
 
 API routes that call the interaction handler must construct `Identity` from their own auth context (for authed) or from `getOrCreateOnboardingSession()` (for anon). The `ClassroomPlayer` component takes the same `Identity` shape as a prop and forwards it to `/api/qa-bank/search`.
 
+### Identity-flow invariants (funnel → authed migration)
+
+Three rules formalized in Step 5; violating any of them silently corrupts the anon→authed funnel:
+
+- **Anon interactions carry `onboarding_sessions.id` in `student_interactions.anonymous_session_id`** (not only in `session_id`). Migration 013's CHECK constraint requires exactly one of `student_id` / `anonymous_session_id` to be set per row. The interaction handler passes `anonymousSessionId: identity.sessionId` through `logClassroomInteraction` for every anon turn.
+- **OTP verify preserves `anonymous_session_id`** via `rpc_convert_onboarding_session` (migration 014). The RPC re-attributes anon rows to the new `student_id` and clears `anonymous_session_id` in one transaction, so funnel analytics can follow a visitor from their first sample question through their eventual paid subscription.
+- **Language preference is inferred from curriculum at conversion time**, not asked as a personalize question. SSC/HSC → `bn-BD`, Cambridge → `en-US`. The Profile section (Step 6+) exposes a toggle for students who want something different; do not add a language question to the onboarding funnel.
+
+## Onboarding flow
+
+Five-minute path from marketing landing to `/app`:
+
+```
+(marketing)/            → "Try a free lesson" CTA
+(onboarding)/try        → curriculum picker (pickCurriculumAction)
+(onboarding)/try/[c]    → subject picker (pickSubjectAction)
+(onboarding)/try/lesson/[sampleId]   → anon classroom (Step 4)
+(onboarding)/signup     → phone/email OTP (sendOtpAction + verifyOtpAction)
+(onboarding)/personalize → goal + daily minutes + exam date (savePersonalizeAction)
+app/                     → authed lobby
+```
+
+Key decisions:
+
+- **Phone OTP is Supabase-handled**: `supabase.auth.signInWithOtp({ phone })` sends via Twilio credentials configured in the Supabase dashboard, not Lamppost env vars. If the phone provider isn't configured, `classifySendError` detects it by message substring (provider / twilio / sms provider) and returns `reason: 'sms_not_configured'`; the UI silently switches to email. Rate-limit errors are detected separately by status 429 or `rate limit` in the message so they aren't misread as config issues.
+- **Email OTP uses Supabase built-in sender** through Step 5. Step 7 will migrate Supabase Auth to a Postmark SMTP transport (to fix BD-ISP deliverability) — that migration must include a smoke test against real `@gmail.com`, `@yahoo.com`, Grameenphone / Robi / Banglalink addresses before closing.
+- **`verifyOtpAction` handles three paths explicitly**: (1) new user + anon session → `convertAnonymousToUser` → `/personalize`; (2) new user + no anon session → `ensureUserRow` upserts → `/personalize`; (3) returning user (users row exists with `students.study_goal` set) → skip conversion → `/app`.
+- **"Coming soon" subject picks still persist** `curriculum_choice` + `subject_choice` to `onboarding_sessions` before rendering the placeholder. Dead clicks are dead funnel data.
+- **`/personalize` is guarded at the page level** via `getSession()` + study_goal check. No session → redirect to `/signup`. Session + study_goal already set → redirect to `/app` (returning users don't re-personalize).
+- **Personalize answers are independent**: each question has its own Skip; a partial answer writes only the answered fields.
+
 ## What NOT to do
 
 - Do NOT generate lessons in Bangla directly — always English first, then translate

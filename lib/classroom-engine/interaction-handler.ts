@@ -76,6 +76,7 @@ export async function handleStudentInteraction(
     // Log + increment (fire-and-forget, don't block the response)
     logClassroomInteraction({
       studentId: identity.type === 'authed' ? identity.studentId : undefined,
+      anonymousSessionId: identity.type === 'anon' ? identity.sessionId : undefined,
       chapterId: input.chapterId,
       sessionId: identity.sessionId,
       interactionType: 'question',
@@ -130,6 +131,7 @@ export async function handleStudentInteraction(
   // Log interaction
   logClassroomInteraction({
     studentId: identity.type === 'authed' ? identity.studentId : undefined,
+    anonymousSessionId: identity.type === 'anon' ? identity.sessionId : undefined,
     chapterId: input.chapterId,
     sessionId: identity.sessionId,
     interactionType: 'question',

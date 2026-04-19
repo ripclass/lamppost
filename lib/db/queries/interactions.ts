@@ -5,6 +5,7 @@ const log = createLogger('InteractionQueries');
 
 export interface InteractionRecord {
   studentId?: string;
+  anonymousSessionId?: string;
   chapterId: string;
   sessionId: string;
   interactionType: string;
@@ -30,7 +31,8 @@ export async function logInteraction(record: InteractionRecord): Promise<string>
   const { data, error } = await supabase
     .from('student_interactions')
     .insert({
-      student_id: record.studentId,
+      student_id: record.studentId ?? null,
+      anonymous_session_id: record.anonymousSessionId ?? null,
       chapter_id: record.chapterId,
       session_id: record.sessionId,
       interaction_type: record.interactionType,

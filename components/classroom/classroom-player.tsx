@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { BookmarkPlus } from 'lucide-react';
 import type { Identity } from '@/lib/classroom-engine/types';
 import { ChapterHeader } from './chapter-header';
 import { QuestionInput } from './question-input';
@@ -88,6 +90,18 @@ export function ClassroomPlayer({ chapterId, chapterTitle, identity, headerBadge
 
   return (
     <section className="mx-auto max-w-3xl px-4 pt-20 pb-24 space-y-6">
+      {identity.type === 'anon' && (
+        <div className="flex justify-end -mb-4">
+          <Link
+            href="/signup?next=/app"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+          >
+            <BookmarkPlus className="size-3" />
+            Save progress
+          </Link>
+        </div>
+      )}
+
       <ChapterHeader chapterTitle={chapterTitle} badge={headerBadge} />
 
       <ResponseStream

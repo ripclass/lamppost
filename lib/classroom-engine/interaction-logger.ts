@@ -13,6 +13,7 @@ const log = createLogger('InteractionLogger');
  */
 export async function logClassroomInteraction(params: {
   studentId?: string;
+  anonymousSessionId?: string;
   chapterId: string;
   sessionId: string;
   interactionType: 'question' | 'quiz_answer' | 'whiteboard_request' | 'voice_input';
@@ -35,6 +36,7 @@ export async function logClassroomInteraction(params: {
   try {
     await dbLogInteraction({
       studentId: params.studentId,
+      anonymousSessionId: params.anonymousSessionId,
       chapterId: params.chapterId,
       sessionId: params.sessionId,
       interactionType: params.interactionType,

@@ -96,4 +96,48 @@ export async function clearOnboardingCookie(): Promise<void> {
   store.delete(COOKIE_NAME);
 }
 
+/**
+ * Update curriculum / subject / sample-chapter choices on the current
+ * onboarding session. Creates the session row if none exists so the funnel
+ * captures "someone picked X even though we have no chapter yet" events.
+ */
+export async function updateOnboardingSession(patch: {
+  curriculumChoice?: string | null;
+  subjectChoice?: string | null;
+  sampleChapterId?: string | null;
+}): Promise<OnboardingSession> {
+  const session = await getOrCreateOnboardingSession();
+
+  const update: Record<string, unknown> = {};
+  if (patch.curriculumChoice !== undefined) update.curriculum_choice = patch.curriculumChoice;
+  if (patch.subjectChoice !== undefined) update.subject_choice = patch.subjectChoice;
+  if (patch.sampleChapterId !== undefined) update.sample_chapter_id = patch.sampleChapterId;
+
+  if (Object.keys(update).length === 0) return session;
+
+  const supabase = getServiceClient();
+  const { data, error } = await supabase
+    .from('onboarding_sessions')
+    .update(update)
+    .eq('id', session.id)
+    .select(
+      'id, session_token, curriculum_choice, subject_choice, sample_chapter_id, completed_sample, converted_user_id',
+    )
+    .single();
+
+  if (error || !data) {
+    throw new Error(`Failed to update onboarding session: ${error?.message}`);
+  }
+
+  return {
+    id: data.id,
+    sessionToken: data.session_token,
+    curriculumChoice: data.curriculum_choice,
+    subjectChoice: data.subject_choice,
+    sampleChapterId: data.sample_chapter_id,
+    completedSample: data.completed_sample ?? false,
+    convertedUserId: data.converted_user_id,
+  };
+}
+
 export const ONBOARDING_COOKIE_NAME = COOKIE_NAME;
