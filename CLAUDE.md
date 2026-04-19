@@ -125,9 +125,35 @@ Three route trees, each with its own layout, auth model, and design language:
 
 ### Admin sections (9)
 
-`/admin` Overview, `/admin/users`, `/admin/billing`, `/admin/content` (+ `content/generate` batch dashboard + `content/[chapterId]` three-panel editor in Step 6), `/admin/flywheel` (+ `flywheel/proposed` + `flywheel/health`), `/admin/costs` (+ `costs/calculator`), `/admin/system` (+ `system/audit`), `/admin/notifications`, `/admin/team`.
+`/admin` Overview, `/admin/users`, `/admin/billing`, `/admin/content` (+ `content/generate` batch form + `content/[chapterId]` three-panel read-only detail in Step 6), `/admin/flywheel` (+ `flywheel/proposed` + `flywheel/health`), `/admin/costs` (+ `costs/calculator`), `/admin/system` (+ `system/audit`), `/admin/notifications`, `/admin/team`.
 
 Sidebar nav is defined in `app/admin/layout.tsx` and filtered by `canAccessAdminSection(session.role, section)` from `lib/auth/roles.ts`.
+
+### Admin API auth guards
+
+Admin-sensitive API routes use `requireAdminRole(minRole)` from `lib/auth/admin-guard.ts`. The helper takes a minimum role and enforces a synthetic hierarchy (super_admin=100, content_editor=50, support_agent=40, finance_viewer=30, infra_engineer=30, read_only=10). Returns a 403 NextResponse on failure rather than throwing, so routes can early-return without try/catch.
+
+Gated endpoints:
+
+| Endpoint | Minimum role | Reason |
+|---|---|---|
+| `POST /api/qa-bank/generate` | `content_editor` | Drives Opus spend |
+| `POST /api/curriculum/batch-generate` | `content_editor` | Drives Opus spend |
+| `GET /api/qa-bank/stats` | `read_only` | Read-only analytics, any admin |
+
+The hierarchy is synthetic because the underlying role model in `lib/auth/roles.ts` is section-scoped, not strictly hierarchical. For endpoints whose permission boundary doesn't line up with "content or above," prefer section-scoped gating via `canAccessAdminSection`. The synthetic hierarchy is a pragmatic choice for the content-write endpoints shipped in Step 6; move to per-section gating if new endpoints need non-content-shaped permissions.
+
+Admin page routes (under `app/admin/*`) continue to rely on the combination of `proxy.ts` (auth required) + `admin/layout.tsx`'s `isAdminRole` check. The API guard is additive — an endpoint that also sits behind the proxy gets both.
+
+### Admin data queries
+
+Admin metrics and admin-only reads live under `lib/db/queries/admin/*`, split by concern:
+
+- `admin/overview.ts` — DAU/WAU, 30-day API spend series, Q&A hit rate, alerts (low-match / stuck / failed), flywheel health
+- `admin/users.ts` — search (name/email/phone/UUID), user detail, recent interactions with `resolution_type`
+- `admin/content.ts` — curriculum → subject → chapter tree, chapter detail, Q&A entries list, `needs_regeneration` flag (stored in `chapters.metadata.needs_regeneration`, no migration needed)
+
+Flywheel health (`getFlywheelHealth`) surfaces on Overview even though the Flywheel section itself is still a skeleton — operators need visibility into whether the nightly cron is alive without the full section being built.
 
 ### Legacy creator flow — removed
 

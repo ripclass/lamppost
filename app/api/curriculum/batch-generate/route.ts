@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { runBatchGeneration } from '@/lib/curriculum/batch-generator';
 import { apiError, apiSuccess } from '@/lib/server/api-response';
+import { requireAdminRole } from '@/lib/auth/admin-guard';
 import { createLogger } from '@/lib/logger';
 import '@/lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY
 
@@ -16,6 +17,9 @@ const log = createLogger('API:BatchGenerate');
  * Body: { subjectId?, targetEntriesPerChapter? }
  */
 export async function POST(request: NextRequest) {
+  const guard = await requireAdminRole('content_editor');
+  if (!guard.ok) return guard.response;
+
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const subjectId = body.subjectId as string | undefined;

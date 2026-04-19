@@ -9,8 +9,8 @@ export default function AdminCostsPage() {
         </p>
       </header>
       <section className="rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
-        Spend breakdown and scenario calculator ship in Phase A Step 6 (absorbing the
-        API-spend charts from <code>/admin/analytics</code>).
+        Full spend breakdown and scenario calculator ship in a later step. The
+        overview page already surfaces 30-day API spend and per-chapter cost data.
       </section>
     </div>
   );

@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { apiError, apiSuccess } from '@/lib/server/api-response';
+import { requireAdminRole } from '@/lib/auth/admin-guard';
 import { createLogger } from '@/lib/logger';
 import '@/lib/config/server'; // boot-time validation of ANTHROPIC_API_KEY
 
@@ -18,6 +19,9 @@ const log = createLogger('API:QAGenerate');
  * This endpoint currently returns the schema and validates input.
  */
 export async function POST(request: NextRequest) {
+  const guard = await requireAdminRole('content_editor');
+  if (!guard.ok) return guard.response;
+
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const { chapterId, minEntries, maxEntries } = body;
