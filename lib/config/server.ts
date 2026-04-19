@@ -58,6 +58,11 @@ const schema = z.object({
   // --- Cron ---
   CRON_SECRET: nonEmpty.optional(),
 
+  // --- Unsubscribe link HMAC key. Separate from CRON_SECRET so rotating one
+  // doesn't force the other. Used to sign the parent-weekly unsubscribe
+  // token; verification tolerates tokens up to 90 days old.
+  UNSUBSCRIBE_SECRET: nonEmpty.optional(),
+
   // --- Q&A routing policy ---
   QA_SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.85),
 

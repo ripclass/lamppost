@@ -145,7 +145,22 @@ The hierarchy is synthetic because the underlying role model in `lib/auth/roles.
 
 Admin page routes (under `app/admin/*`) continue to rely on the combination of `proxy.ts` (auth required) + `admin/layout.tsx`'s `isAdminRole` check. The API guard is additive — an endpoint that also sits behind the proxy gets both.
 
-### Admin data queries
+## Parent weekly email (Step 7)
+
+The `/api/cron/parent-weekly` route sends a short weekly summary every Sunday 10 AM Asia/Dhaka (`0 4 * * 0` UTC, configured in `vercel.json`). Rules the implementation follows:
+
+- **Real data only, no placeholders.** The template surfaces interactions count, chapters touched, Q&A hit rate, streak days, rate-limit hits, and the most active chapter title — all computed from real `student_interactions` rows. If we don't track a metric today, it does not appear in the email. "Coming soon" lines erode trust faster than a lean honest template.
+- **One email per parent, one template for both single-student and multi-student cases.** The render function iterates over a `students` array; a household with two kids gets one email with two sections, not two emails.
+- **Shadow parent users are real `users` rows with `auth_id = null` and `role = 'parent'`.** They cannot log in. Phase B's parent OTP flow should claim the existing row (set `auth_id`, confirm email) rather than create a duplicate — same pattern as Step 5's anon-session → authed-student conversion.
+- **Unsubscribe is stateless HMAC.** Tokens embed `{parentId, issuedAt}` signed with `UNSUBSCRIBE_SECRET` (separate env from `CRON_SECRET` so they rotate independently). Tokens older than 90 days are rejected at verification time. See `lib/notifications/unsubscribe-token.ts`.
+- **Postmark via `fetch`, not the SDK.** 10-second timeout on every send so a hanging Postmark request can't stall the cron. All transactional mail — parent weekly, Supabase Auth OTP (after the Step 7 dashboard migration) — uses the `lamppost-transactional` Postmark message stream. Broadcast / announcement mail should use a separate stream so deliverability reputation stays unified on the transactional side.
+- **Cron dry-run.** Passing `?dryRun=true` (only useful with a valid `CRON_SECRET` bearer) runs the full query + render path but skips the Postmark call. Valuable for manual verification before Postmark is provisioned.
+- **Graceful skip when Postmark is missing.** The cron still runs the query and logs "would have emailed N parents" even when `POSTMARK_SERVER_TOKEN` is absent. Returns 200, not 500 — we don't want cron-level monitoring to page on a known provisioning gap.
+- **Courtesy welcome email on parent-link creation.** The `linkParentEmailAction` server action sends a one-shot welcome/opt-out email via the same Postmark infrastructure the moment a student adds a parent. This gives the parent a chance to unsubscribe before the first weekly email ever arrives.
+- **BD-ISP deliverability.** `scripts/postmark-deliverability-smoke-test.ts` sends a test to a `--to` list and queries Postmark's Messages API for actual delivery status (not just "sent"). Always include at least one `@gmail.com` and one `@yahoo.com` address alongside `@grameenphone.net` / `@robi.com.bd` / `@banglalink.net` so you can isolate Postmark-config issues from BD-ISP-specific problems.
+- **Supabase Auth email transport.** Migrate Supabase Auth OTP emails to use Postmark SMTP (configured in the Supabase dashboard → Auth → SMTP). Use the same `lamppost-transactional` stream and the same `POSTMARK_FROM_EMAIL`. Run the smoke test against real BD addresses before declaring the migration complete.
+
+## Admin data queries
 
 Admin metrics and admin-only reads live under `lib/db/queries/admin/*`, split by concern:
 
