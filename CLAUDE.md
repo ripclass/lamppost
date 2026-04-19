@@ -32,7 +32,10 @@ pnpm dev              # dev server on localhost:3000
 pnpm build            # production build
 pnpm typecheck        # run tsc --noEmit
 pnpm lint             # eslint
+pnpm test             # vitest run (47 tests as of Phase A close)
 ```
+
+`pnpm lint` surfaces 3 persistent warnings in `lib/action/engine.ts` and `components/curriculum-browser/chapter-card.tsx`. These files are upstream OpenMAIC code and cannot be modified per fork policy — do not attempt to fix them. Zero errors is the ship bar; those three warnings are expected.
 
 ## Code style
 

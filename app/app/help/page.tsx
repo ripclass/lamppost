@@ -6,7 +6,7 @@ export default function HelpPage() {
         Searchable FAQ, report-a-problem form, chapter feedback, WhatsApp support.
       </p>
       <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground/70">
-        Help center ships in Phase A Step 4.
+        Help center coming soon.
       </div>
     </section>
   );

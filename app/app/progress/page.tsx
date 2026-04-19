@@ -7,7 +7,7 @@ export default function ProgressIndex() {
         <code className="mx-1 text-xs">/app/progress/[subjectId]</code>.
       </p>
       <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground/70">
-        Journey-map progress view ships in Phase A Step 4.
+        Journey-map progress view coming soon.
       </div>
     </section>
   );

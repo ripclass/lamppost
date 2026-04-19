@@ -8,7 +8,7 @@ export default function FlywheelProposedPage() {
         </p>
       </header>
       <section className="rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
-        Review UI ships in Phase A Step 6.
+        Review UI coming soon.
       </section>
     </div>
   );

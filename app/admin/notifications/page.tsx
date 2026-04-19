@@ -8,7 +8,7 @@ export default function AdminNotificationsPage() {
         </p>
       </header>
       <section className="rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
-        Full notifications tool ships in Phase A.2.
+        Full notifications tool coming soon.
       </section>
     </div>
   );

@@ -8,7 +8,7 @@ export default function AdminTeamPage() {
         </p>
       </header>
       <section className="rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
-        Team management ships in Phase A Step 6.
+        Team management coming soon.
       </section>
     </div>
   );

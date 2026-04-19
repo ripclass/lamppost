@@ -1,8 +1,5 @@
 import { getServiceClient } from '../supabase';
-import { createLogger } from '@/lib/logger';
 import type { Chapter, Subject, Curriculum } from '@/lib/curriculum/types';
-
-const log = createLogger('ChapterQueries');
 
 // ==================== Curricula ====================
 

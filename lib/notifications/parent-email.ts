@@ -10,9 +10,10 @@ const POSTMARK_TIMEOUT_MS = 10_000;
 
 /**
  * The Postmark transactional stream the parent-weekly email uses. Supabase
- * Auth OTP emails (Step 7+) should route through the same transactional
- * stream so deliverability reputation stays unified. Announcements and
- * marketing go through a separate broadcast stream (not yet configured).
+ * Auth OTP emails, once their SMTP transport is migrated to Postmark in the
+ * Supabase dashboard, should route through the same transactional stream
+ * so deliverability reputation stays unified. Announcements and marketing
+ * belong on a separate broadcast stream (not yet configured).
  */
 export const PARENT_WEEKLY_STREAM = 'lamppost-transactional';
 

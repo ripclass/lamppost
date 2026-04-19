@@ -46,7 +46,7 @@ export async function runBatchGeneration(
   config: BatchConfig,
   onProgress?: BatchProgressCallback,
 ): Promise<BatchProgress> {
-  const { subjectId, skipCompleted = true, targetEntriesPerChapter } = config;
+  const { subjectId, targetEntriesPerChapter } = config;
 
   // Get chapters that need generation
   const chapters = await getChaptersByStatus('pending', subjectId);

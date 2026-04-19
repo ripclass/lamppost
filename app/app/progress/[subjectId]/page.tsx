@@ -13,7 +13,7 @@ export default async function SubjectProgressPage({
         Subject: <span className="font-medium">{subjectId}</span>
       </p>
       <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground/70">
-        Vertical chapter path with completed/current/locked states ships in Phase A Step 4.
+        Vertical chapter path with completed/current/locked states coming soon.
       </div>
     </section>
   );

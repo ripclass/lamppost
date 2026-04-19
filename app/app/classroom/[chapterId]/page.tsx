@@ -1,7 +1,8 @@
-// Authed student classroom. Lamppost's anonymous sample lesson ships the
-// classroom player at /try/lesson/[sampleId] in Step 4; this authed route
-// will mount the same `ClassroomPlayer` with `identity.type === 'authed'`
-// once onboarding + auth land in Step 5. Keeping this a skeleton until then.
+// Authed student classroom. The anonymous sample lesson already mounts the
+// classroom player at /try/lesson/[sampleId] (Step 4). This authed route
+// will reuse the same `ClassroomPlayer` with `identity.type === 'authed'`.
+// Deferred to Phase B — needs slide playback + lesson-scene rendering on
+// top of the preserved slide-renderer / whiteboard primitives.
 
 export default async function StudentClassroomPage({
   params,
@@ -16,8 +17,8 @@ export default async function StudentClassroomPage({
         Chapter: <span className="font-medium">{chapterId}</span>
       </p>
       <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground/70">
-        Authed student classroom ships with onboarding in Phase A Step 5. Try
-        the anonymous sample at <code>/try/lesson/&lt;chapterId&gt;</code>.
+        Authed classroom coming soon. For now, try the anonymous sample at{' '}
+        <code>/try/lesson/&lt;chapterId&gt;</code>.
       </div>
     </section>
   );

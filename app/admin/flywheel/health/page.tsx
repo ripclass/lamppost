@@ -8,7 +8,7 @@ export default function FlywheelHealthPage() {
         </p>
       </header>
       <section className="rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
-        Health dashboard ships in Phase A Step 6.
+        Health dashboard coming soon.
       </section>
     </div>
   );

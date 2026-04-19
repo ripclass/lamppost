@@ -19,7 +19,7 @@ export default async function StudentLobby() {
       <div className="mt-8 rounded-2xl border border-dashed border-border p-8 text-center">
         <p className="text-sm text-muted-foreground/70">
           Lobby with &ldquo;Continue&rdquo; hero, weekly plan strip, and recent activity
-          ships in Phase A Step 5.
+          coming soon.
         </p>
       </div>
 
@@ -29,7 +29,7 @@ export default async function StudentLobby() {
             <div>
               <p className="text-sm font-medium">Preview the student experience</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                The anonymous sample classroom (Step 4) — for dev and design review.
+                The anonymous sample classroom — for dev and design review.
               </p>
             </div>
             <Button asChild size="sm" variant="outline">

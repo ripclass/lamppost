@@ -46,7 +46,7 @@ export default function AdminSystemPage() {
 
       <section className="mt-6 rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground/70">
         Full health dashboard (Supabase query perf, Ollama uptime, error rates, slow
-        queries, recent deployments) and audit log view ship in Phase A Step 6.
+        queries, recent deployments) and audit log view coming soon.
       </section>
     </div>
   );
